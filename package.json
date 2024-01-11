@@ -10,10 +10,13 @@
     "db:push": "drizzle-kit push:mysql --config=drizzle.config.ts"
   },
   "dependencies": {
+    "@auth/core": "^0.20.0",
+    "@auth/drizzle-adapter": "^0.3.14",
     "@planetscale/database": "^1.13.0",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.29.3",
     "next": "14.0.4",
+    "next-auth": "^4.24.5",
     "react": "^18",
     "react-dom": "^18"
   },
