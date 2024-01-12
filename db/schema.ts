@@ -4,8 +4,11 @@ import {
   mysqlTable,
   primaryKey,
   varchar,
+  serial,
+  mysqlEnum,
 } from "drizzle-orm/mysql-core";
 import type { AdapterAccount } from "@auth/core/adapters";
+import { relations } from "drizzle-orm";
 
 export const users = mysqlTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
@@ -17,6 +20,10 @@ export const users = mysqlTable("user", {
   }).defaultNow(),
   image: varchar("image", { length: 255 }),
 });
+
+export const usersRelations = relations(users, ({ many }) => ({
+  todos: many(todos),
+}));
 
 export const accounts = mysqlTable(
   "account",
@@ -63,3 +70,28 @@ export const verificationTokens = mysqlTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   }),
 );
+
+export const todos = mysqlTable("todo", {
+  id: serial("id").notNull(),
+  taskId: varchar("taskId", { length: 255 }).notNull(),
+  title: varchar("title", { length: 255 }).notNull(),
+  status: mysqlEnum("status", [
+    "BACKLOG",
+    "TODO",
+    "IN_PROGRESS",
+    "DONE",
+    "CANCELLED",
+  ]),
+  priority: mysqlEnum("priority", ["LOW", "MEDIUM", "HIGH"]),
+  label: mysqlEnum("label", ["BUG", "FEATURE", "IMPROVEMENT", "DOCUMENTATION"]),
+  authorId: varchar("authorId", { length: 255 }).references(() => users.id, {
+    onDelete: "cascade",
+  }),
+});
+
+export const todosRelations = relations(todos, ({ one }) => ({
+  author: one(users, {
+    fields: [todos.authorId],
+    references: [users.id],
+  }),
+}));
