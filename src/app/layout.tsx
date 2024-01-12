@@ -6,8 +6,8 @@ import NextAuthProvider from "@/providers/session-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ToDo App",
-  description: "ToDo App made with the best stack in the world",
+  title: "Taskerino App",
+  description: "Taskerino App made with the best stack in the world",
 };
 
 export default function RootLayout({

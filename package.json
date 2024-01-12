@@ -1,5 +1,5 @@
 {
-  "name": "todo-app",
+  "name": "taskerino-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -13,9 +13,11 @@
     "@auth/core": "^0.20.0",
     "@auth/drizzle-adapter": "^0.3.14",
     "@planetscale/database": "^1.13.0",
+    "@tanstack/react-table": "^8.11.6",
     "clsx": "^2.1.0",
     "dotenv": "^16.3.1",
     "drizzle-orm": "^0.29.3",
+    "mysql2": "^3.7.0",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
     "react": "^18",

@@ -22,7 +22,7 @@ export const users = mysqlTable("user", {
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
-  todos: many(todos),
+  tasks: many(tasks),
 }));
 
 export const accounts = mysqlTable(
@@ -71,7 +71,7 @@ export const verificationTokens = mysqlTable(
   }),
 );
 
-export const todos = mysqlTable("todo", {
+export const tasks = mysqlTable("task", {
   id: serial("id").notNull(),
   taskId: varchar("taskId", { length: 255 }).notNull(),
   title: varchar("title", { length: 255 }).notNull(),
@@ -89,9 +89,9 @@ export const todos = mysqlTable("todo", {
   }),
 });
 
-export const todosRelations = relations(todos, ({ one }) => ({
+export const tasksRelations = relations(tasks, ({ one }) => ({
   author: one(users, {
-    fields: [todos.authorId],
+    fields: [tasks.authorId],
     references: [users.id],
   }),
 }));
