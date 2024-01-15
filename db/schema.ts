@@ -6,6 +6,7 @@ import {
   varchar,
   serial,
   mysqlEnum,
+  bigint,
 } from "drizzle-orm/mysql-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 import { relations } from "drizzle-orm";
@@ -23,6 +24,7 @@ export const users = mysqlTable("user", {
 
 export const usersRelations = relations(users, ({ many }) => ({
   tasks: many(tasks),
+  boards: many(boards),
 }));
 
 export const accounts = mysqlTable(
@@ -71,8 +73,27 @@ export const verificationTokens = mysqlTable(
   }),
 );
 
+export const boards = mysqlTable("board", {
+  id: serial("id").primaryKey().notNull(),
+  name: varchar("name", { length: 255 }).notNull(),
+  status: mysqlEnum("status", ["ACTIVE", "INACTIVE"]),
+  authorId: varchar("authorId", { length: 255 })
+    .references(() => users.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+});
+
+export const boardsRelations = relations(boards, ({ one, many }) => ({
+  author: one(users, {
+    fields: [boards.authorId],
+    references: [users.id],
+  }),
+  tasks: many(tasks),
+}));
+
 export const tasks = mysqlTable("task", {
-  id: serial("id").notNull(),
+  id: serial("id").primaryKey().notNull(),
   taskId: varchar("taskId", { length: 255 }).notNull(),
   title: varchar("title", { length: 255 }).notNull(),
   status: mysqlEnum("status", [
@@ -84,14 +105,28 @@ export const tasks = mysqlTable("task", {
   ]),
   priority: mysqlEnum("priority", ["LOW", "MEDIUM", "HIGH"]),
   label: mysqlEnum("label", ["BUG", "FEATURE", "IMPROVEMENT", "DOCUMENTATION"]),
-  authorId: varchar("authorId", { length: 255 }).references(() => users.id, {
-    onDelete: "cascade",
-  }),
+  boardId: bigint("boardId", {
+    unsigned: true,
+    mode: "bigint",
+  })
+    .references(() => boards.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+  authorId: varchar("authorId", { length: 255 })
+    .references(() => users.id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
 });
 
 export const tasksRelations = relations(tasks, ({ one }) => ({
   author: one(users, {
     fields: [tasks.authorId],
     references: [users.id],
+  }),
+  board: one(boards, {
+    fields: [tasks.boardId],
+    references: [boards.id],
   }),
 }));
