@@ -48,4 +48,8 @@ export const insertTaskSchema = createInsertSchema(tasks, {
       return { message: "Label must be a valid value." };
     },
   }),
+  boardId: z.string({
+    required_error: "Board ID is required.",
+    invalid_type_error: "Board ID must be a string.",
+  }),
 });

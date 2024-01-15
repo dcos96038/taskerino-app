@@ -1,40 +1,33 @@
-import Link from "next/link";
-import { FaChevronRight } from "react-icons/fa";
+import { createBoard } from "@/actions/boards";
+import AddBoardModal from "@/components/add-board-modal";
+import { BoardCard } from "@/components/board-card";
+import { boardsService } from "@/services/boards";
 
-function HomePage() {
+async function HomePage() {
+  const boardsList = await boardsService.getAll();
+
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-2xl font-medium">Boards</h2>
-      <div className="grid grid-cols-3 gap-5 place-items-center">
-        <div className="flex justify-between items-center py-2 px-4 bg-gray-900 border rounded-lg hover:bg-gray-700 cursor-pointer w-72">
-          <div className="flex flex-col">
-            <span className="text-xl font-bold">Board 1</span>
-            <span className="text-sm font-medium">14 Tasks</span>
-          </div>
-          <FaChevronRight />
-        </div>
-        <div className="flex justify-between items-center py-2 px-4 bg-gray-900 border rounded-lg hover:bg-gray-700 cursor-pointer w-72">
-          <div className="flex flex-col">
-            <span className="text-xl font-bold">Board 1</span>
-            <span className="text-sm font-medium">14 Tasks</span>
-          </div>
-          <FaChevronRight />
-        </div>
-        <div className="flex justify-between items-center py-2 px-4 bg-gray-900 border rounded-lg hover:bg-gray-700 cursor-pointer w-72">
-          <div className="flex flex-col">
-            <span className="text-xl font-bold">Board 1</span>
-            <span className="text-sm font-medium">14 Tasks</span>
-          </div>
-          <FaChevronRight />
-        </div>
-        <div className="flex justify-between items-center py-2 px-4 bg-gray-900 border rounded-lg hover:bg-gray-700 cursor-pointer w-72">
-          <div className="flex flex-col">
-            <span className="text-xl font-bold">Board 1</span>
-            <span className="text-sm font-medium">14 Tasks</span>
-          </div>
-          <FaChevronRight />
-        </div>
+      <div className="flex justify-between">
+        <h2 className="text-2xl font-medium">Boards</h2>
+        <AddBoardModal action={createBoard} />
       </div>
+      {boardsList.length > 0 ? (
+        <div className="grid grid-cols-3 gap-5 place-items-center">
+          {boardsList.map((board) => (
+            <BoardCard
+              key={board.id}
+              id={board.id}
+              name={board.name}
+              tasks={board.tasks.length}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center text-white rounded-lg p-4">
+          <h3 className="text-xl font-medium">No boards yet</h3>
+        </div>
+      )}
     </div>
   );
 }

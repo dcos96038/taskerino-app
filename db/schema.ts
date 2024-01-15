@@ -76,7 +76,7 @@ export const verificationTokens = mysqlTable(
 export const boards = mysqlTable("board", {
   id: serial("id").primaryKey().notNull(),
   name: varchar("name", { length: 255 }).notNull(),
-  status: mysqlEnum("status", ["ACTIVE", "INACTIVE"]),
+  status: mysqlEnum("status", ["ACTIVE", "INACTIVE"]).default("ACTIVE"),
   authorId: varchar("authorId", { length: 255 })
     .references(() => users.id, {
       onDelete: "cascade",

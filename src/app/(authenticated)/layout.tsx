@@ -2,6 +2,7 @@ import { LogoutButton } from "@/components/auth/logout-button";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { authOptions } from "../api/auth/[...nextauth]/route";
+import Link from "next/link";
 
 export default async function HomeLayout({
   children,
@@ -17,9 +18,9 @@ export default async function HomeLayout({
   return (
     <div className="flex flex-col px-10 py-6 gap-6">
       <div className="py-2 px-3 sm:px-6 flex items-center justify-between bg-gray-900 border border-gray-100 rounded-md">
-        <h1 className="sm:text-lg text-sm font-bold text-white">
+        <Link href="/" className="sm:text-lg text-sm font-bold text-white">
           Taskerino App
-        </h1>
+        </Link>
         <div className="flex gap-4">
           <div className="overflow-hidden rounded-full">
             <Image
