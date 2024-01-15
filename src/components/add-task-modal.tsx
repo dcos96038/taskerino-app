@@ -45,8 +45,6 @@ export const AddTaskModal: React.FC<AddTaskModalProps> = ({
     if (!formRef.current) return;
     const formData = new FormData(formRef.current);
 
-    console.log(formData.get("title"));
-
     const validatedData = requestSchema.safeParse({
       title: formData.get("title"),
       status: formData.get("status"),

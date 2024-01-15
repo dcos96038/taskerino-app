@@ -3,7 +3,6 @@ import { BoardInsert } from "@/types/boards";
 import { getServerSession } from "next-auth";
 import { db } from "../../db";
 import { boards } from "../../db/schema";
-import { eq } from "drizzle-orm";
 
 type CreateBoardParams = Pick<BoardInsert, "name">;
 
