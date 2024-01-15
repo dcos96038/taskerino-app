@@ -9,27 +9,6 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 
-const data: Task[] = [
-  {
-    id: 1,
-    title: "Task 1",
-    taskId: "1",
-    authorId: "1",
-    priority: TaskPriority.HIGH,
-    label: TaskLabel.BUG,
-    status: TaskStatus.TODO,
-  },
-  {
-    id: 2,
-    title: "Task 2",
-    taskId: "2",
-    authorId: "2",
-    priority: TaskPriority.LOW,
-    label: TaskLabel.FEATURE,
-    status: TaskStatus.TODO,
-  },
-];
-
 const columnHelper = createColumnHelper<Task>();
 
 const columns: ColumnDef<Task>[] = [
@@ -55,12 +34,19 @@ const columns: ColumnDef<Task>[] = [
   }),
 ];
 
-export const Table = () => {
+interface TableProps {
+  data: Task[];
+}
+
+export const Table: React.FC<TableProps> = ({ data }) => {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel<Task>(),
   });
+
+  const headerGroups = table.getHeaderGroups();
+  const rows = table.getRowModel().rows;
 
   return (
     <div className="flow-root overflow-hidden rounded-lg border md:mt-8">
@@ -69,7 +55,7 @@ export const Table = () => {
           <div className="group overflow-hidden ring-1 ring-black ring-opacity-5">
             <table className="min-w-full divide-y divide-gray-100">
               <thead className="bg-gray-900">
-                {table.getHeaderGroups().map((headerGroup) => (
+                {headerGroups.map((headerGroup) => (
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
                       <th
@@ -87,21 +73,32 @@ export const Table = () => {
                 ))}
               </thead>
               <tbody className="divide-y divide-gray-100 bg-transparent">
-                {table.getRowModel().rows.map((row) => (
-                  <tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <td
-                        className="ml-1 whitespace-nowrap py-3 pl-4 pr-3 text-sm"
-                        key={cell.id}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
-                      </td>
-                    ))}
+                {rows.length > 0 ? (
+                  rows.map((row) => (
+                    <tr key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <td
+                          className="ml-1 whitespace-nowrap py-3 pl-4 pr-3 text-sm"
+                          key={cell.id}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext(),
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td
+                      colSpan={columns.length}
+                      className="py-3 pl-4 pr-3 text-sm text-center"
+                    >
+                      No tasks found
+                    </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
