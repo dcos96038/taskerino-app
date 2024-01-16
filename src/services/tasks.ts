@@ -3,7 +3,7 @@ import { db } from "../../db";
 import { tasks } from "../../db/schema";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
-import { desc } from "drizzle-orm";
+import { count, desc, eq } from "drizzle-orm";
 
 type CreateTaskParams = Pick<
   TaskInsert,
@@ -23,17 +23,20 @@ export const tasksService = {
 
     await db.insert(tasks).values(newTask);
   },
-  getLast: async (_boardId: string) => {
+  getLastId: async (_boardId: string) => {
     const boardId = BigInt(_boardId);
 
     const session = await getServerSession(authOptions);
 
     if (!session) throw new Error("Unauthorized");
 
-    return await db.query.tasks.findFirst({
-      orderBy: desc(tasks.id),
-      where: (tasks, { eq }) =>
-        eq(tasks.authorId, session.user.id) && eq(tasks.boardId, boardId),
-    });
+    const [totalTasksFromBoard] = await db
+      .select({
+        value: count(tasks.id),
+      })
+      .from(tasks)
+      .where(eq(tasks.authorId, session.user.id) && eq(tasks.boardId, boardId));
+
+    return totalTasksFromBoard.value;
   },
 };

@@ -23,18 +23,14 @@ export async function createTask(formData: FormData) {
   });
 
   try {
-    const lastTask = await tasksService.getLast(data.boardId);
+    const newTaskId = await tasksService.getLastId(data.boardId);
     const board = await boardsService.get(data.boardId);
 
     if (!board) throw new Error("Board not found");
 
     const boardPrefix = board.boardPrefix;
 
-    let taskId = `${boardPrefix}-1`;
-
-    if (lastTask) {
-      taskId = `${boardPrefix}-${lastTask.id + 1}`;
-    }
+    let taskId = `${boardPrefix}-${newTaskId + 1}`;
 
     await tasksService.create({
       ...data,
