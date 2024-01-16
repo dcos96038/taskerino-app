@@ -3,6 +3,7 @@ import { BoardInsert } from "@/types/boards";
 import { getServerSession } from "next-auth";
 import { db } from "../../db";
 import { boards } from "../../db/schema";
+import { eq } from "drizzle-orm";
 
 type CreateBoardParams = Pick<BoardInsert, "name" | "boardPrefix">;
 
@@ -35,5 +36,12 @@ export const boardsService = {
         tasks: true,
       },
     });
+  },
+  delete: async (boardId: string) => {
+    const session = await getServerSession(authOptions);
+
+    if (!session) throw new Error("Unauthorized");
+
+    await db.delete(boards).where(eq(boards.id, Number(boardId)));
   },
 };

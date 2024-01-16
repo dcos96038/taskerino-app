@@ -1,7 +1,7 @@
-import { createBoard } from "@/actions/boards";
-import AddBoardModal from "@/components/modal/add-board-modal";
+import AddBoardModal from "@/app/(authenticated)/(home)/add-board.modal";
 import { BoardCard } from "@/components/ui/board-card";
 import { boardsService } from "@/services/boards";
+import { createBoard } from "./actions";
 
 async function HomePage() {
   const boardsList = await boardsService.getAll();

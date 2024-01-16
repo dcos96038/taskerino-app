@@ -77,7 +77,7 @@ export const boards = mysqlTable("board", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   status: mysqlEnum("status", ["ACTIVE", "INACTIVE"]).default("ACTIVE"),
-  boardPrefix: varchar("boardPrefix", { length: 4 }),
+  boardPrefix: varchar("boardPrefix", { length: 4 }).unique(),
   authorId: varchar("authorId", { length: 255 })
     .references(() => users.id, {
       onDelete: "cascade",

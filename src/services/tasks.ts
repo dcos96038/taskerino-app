@@ -39,4 +39,11 @@ export const tasksService = {
 
     return totalTasksFromBoard.value;
   },
+  delete: async (taskId: number) => {
+    const session = await getServerSession(authOptions);
+
+    if (!session) throw new Error("Unauthorized");
+
+    await db.delete(tasks).where(eq(tasks.id, taskId));
+  },
 };

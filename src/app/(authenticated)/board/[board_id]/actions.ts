@@ -4,6 +4,7 @@ import { insertTaskSchema } from "@/types/tasks";
 import { tasksService } from "@/services/tasks";
 import { revalidatePath } from "next/cache";
 import { boardsService } from "@/services/boards";
+import { redirect } from "next/navigation";
 
 const requestSchema = insertTaskSchema.pick({
   title: true,
@@ -42,4 +43,26 @@ export async function createTask(formData: FormData) {
   }
 
   revalidatePath(`/board/${data.boardId}`);
+}
+
+export async function deleteBoard(formData: FormData) {
+  const boardId = formData.get("boardId") as string;
+
+  if (!boardId) throw new Error("Board ID not found");
+
+  await boardsService.delete(boardId);
+
+  revalidatePath(`/board/${boardId}`);
+  redirect("/");
+}
+
+export async function deleteTask(formData: FormData) {
+  const taskId = Number(formData.get("taskId"));
+  const boardId = formData.get("boardId") as string;
+
+  if (!boardId) throw new Error("Board ID not found");
+  if (!taskId) throw new Error("Task ID not found");
+
+  await tasksService.delete(taskId);
+  revalidatePath(`/board/${boardId}`);
 }

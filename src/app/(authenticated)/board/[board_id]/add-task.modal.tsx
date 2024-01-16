@@ -8,8 +8,9 @@ import {
 } from "@/types/tasks";
 import { CiCirclePlus } from "react-icons/ci";
 import { useQueryParam, withDefault, BooleanParam } from "use-query-params";
-import { Modal } from "../ui/modal";
+import { Modal } from "../../../../components/ui/modal";
 import { useRef, useState } from "react";
+import { Button } from "../../../../components/ui/button";
 
 interface AddTaskModalProps {
   boardId: string;
@@ -154,23 +155,16 @@ export const AddTaskModal: React.FC<AddTaskModalProps> = ({
               </div>
             ) : null}
             <div className="flex gap-4 justify-end">
-              <button
-                className="bg-white disabled:bg-gray-400 disabled:cursor-not-allowed text-black rounded-md hover:bg-gray-200 transition-colors text-sm px-2 py-1 font-medium flex items-center"
-                type="button"
-                onClick={handleSubmit}
-              >
+              <Button type="submit" variant="secondary" onClick={handleSubmit}>
                 Add Task
-              </button>
+              </Button>
             </div>
           </form>
         </Modal>
       )}
-      <button
-        className="bg-white text-black rounded-md hover:bg-gray-200 transition-colors text-xs px-2 font-medium flex items-center gap-1 py-2"
-        onClick={() => setModal(!modal)}
-      >
+      <Button variant="secondary" onClick={() => setModal(!modal)}>
         Add Task <CiCirclePlus className="text-lg stroke-1" />
-      </button>
+      </Button>
     </>
   );
 };

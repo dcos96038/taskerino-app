@@ -1,4 +1,4 @@
-import { Table } from "@/components/table";
+import { Table } from "@/components/ui/table";
 import { CiCirclePlus } from "react-icons/ci";
 
 function Loading() {

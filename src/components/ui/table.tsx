@@ -8,31 +8,14 @@ import {
   useReactTable,
   flexRender,
 } from "@tanstack/react-table";
+import { Button } from "./button";
+import { MdEdit } from "react-icons/md";
+
+import { DeleteTaskButton } from "@/app/(authenticated)/board/[board_id]/delete-task.button";
+import { useParams } from "next/navigation";
+import { useMemo } from "react";
 
 const columnHelper = createColumnHelper<Task>();
-
-const columns: ColumnDef<Task>[] = [
-  columnHelper.display({
-    id: "taskId",
-    header: "Task ID",
-    cell: (props) => props.row.original.taskId,
-  }),
-  columnHelper.display({
-    id: "title",
-    header: "Title",
-    cell: (props) => props.row.original.title,
-  }),
-  columnHelper.display({
-    id: "status",
-    header: "Status",
-    cell: (props) => props.row.original.status,
-  }),
-  columnHelper.display({
-    id: "priority",
-    header: "Priority",
-    cell: (props) => props.row.original.priority,
-  }),
-];
 
 type TableProps =
   | {
@@ -44,6 +27,51 @@ type TableProps =
     };
 
 export const Table: React.FC<TableProps> = (props) => {
+  const params = useParams<{ board_id: string }>();
+
+  console.log(params);
+
+  const columns: ColumnDef<Task>[] = useMemo(
+    () => [
+      columnHelper.display({
+        id: "taskId",
+        header: "Task ID",
+        cell: (props) => props.row.original.taskId,
+      }),
+      columnHelper.display({
+        id: "title",
+        header: "Title",
+        cell: (props) => props.row.original.title,
+      }),
+      columnHelper.display({
+        id: "status",
+        header: "Status",
+        cell: (props) => props.row.original.status,
+      }),
+      columnHelper.display({
+        id: "priority",
+        header: "Priority",
+        cell: (props) => props.row.original.priority,
+      }),
+      columnHelper.display({
+        id: "actions",
+        header: "",
+        cell: (props) => (
+          <div className="flex gap-1 justify-end">
+            <Button variant="icon" className="text-base">
+              <MdEdit />
+            </Button>
+            <DeleteTaskButton
+              boardId={params.board_id}
+              taskId={props.row.original.id}
+            />
+          </div>
+        ),
+      }),
+    ],
+    [params.board_id],
+  );
+
   const table = useReactTable({
     data: props.loading ? [] : props.data,
     columns,
