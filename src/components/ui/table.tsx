@@ -29,8 +29,6 @@ type TableProps =
 export const Table: React.FC<TableProps> = (props) => {
   const params = useParams<{ board_id: string }>();
 
-  console.log(params);
-
   const columns: ColumnDef<Task>[] = useMemo(
     () => [
       columnHelper.display({
