@@ -10,7 +10,7 @@ interface BoardCardProps {
 export const BoardCard: React.FC<BoardCardProps> = ({ name, tasks, id }) => {
   return (
     <Link
-      href={`/${id}`}
+      href={`/board/${id}`}
       className="flex justify-between gap-1 items-center line-clamp-1 py-2 px-4 bg-gray-900 border rounded-lg hover:bg-gray-700 w-72"
     >
       <div className="flex flex-col">

@@ -18,7 +18,6 @@ export const boardsService = {
     });
   },
   getAll: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     const session = await getServerSession(authOptions);
 
     if (!session) throw new Error("Unauthorized");
@@ -30,7 +29,6 @@ export const boardsService = {
     });
   },
   get: async (boardId: string) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     return await db.query.boards.findFirst({
       where: (boards, { eq }) => eq(boards.id, Number(boardId)),
       with: {
