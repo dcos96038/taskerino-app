@@ -1,6 +1,6 @@
 "use client";
 
-import { Task, TaskLabel, TaskPriority, TaskStatus } from "@/types/tasks";
+import { Task } from "@/types/tasks";
 import {
   ColumnDef,
   createColumnHelper,
@@ -34,13 +34,18 @@ const columns: ColumnDef<Task>[] = [
   }),
 ];
 
-interface TableProps {
-  data: Task[];
-}
+type TableProps =
+  | {
+      data: Task[];
+      loading?: false;
+    }
+  | {
+      loading: true;
+    };
 
-export const Table: React.FC<TableProps> = ({ data }) => {
+export const Table: React.FC<TableProps> = (props) => {
   const table = useReactTable({
-    data,
+    data: props.loading ? [] : props.data,
     columns,
     getCoreRowModel: getCoreRowModel<Task>(),
   });
@@ -85,6 +90,19 @@ export const Table: React.FC<TableProps> = ({ data }) => {
                             cell.column.columnDef.cell,
                             cell.getContext(),
                           )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))
+                ) : props.loading ? (
+                  Array.from({ length: 10 }).map((_, i) => (
+                    <tr key={i}>
+                      {columns.map((column) => (
+                        <td
+                          className="ml-1 whitespace-nowrap py-2 px-2 text-sm"
+                          key={column.id}
+                        >
+                          <div className="h-4 w-46 rounded bg-gray-400 animate-pulse"></div>
                         </td>
                       ))}
                     </tr>

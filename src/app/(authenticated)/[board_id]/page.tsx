@@ -1,5 +1,5 @@
 import { createTask } from "@/actions/tasks";
-import { AddTaskModal } from "@/components/add-task-modal";
+import { AddTaskModal } from "@/components/modal/add-task-modal";
 import { Table } from "@/components/table";
 import { boardsService } from "@/services/boards";
 

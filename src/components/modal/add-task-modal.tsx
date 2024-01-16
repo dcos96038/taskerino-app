@@ -8,7 +8,7 @@ import {
 } from "@/types/tasks";
 import { CiCirclePlus } from "react-icons/ci";
 import { useQueryParam, withDefault, BooleanParam } from "use-query-params";
-import { Modal } from "./ui/modal";
+import { Modal } from "../ui/modal";
 import { useRef, useState } from "react";
 
 interface AddTaskModalProps {

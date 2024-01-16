@@ -1,6 +1,6 @@
 import { createBoard } from "@/actions/boards";
-import AddBoardModal from "@/components/add-board-modal";
-import { BoardCard } from "@/components/board-card";
+import AddBoardModal from "@/components/modal/add-board-modal";
+import { BoardCard } from "@/components/ui/board-card";
 import { boardsService } from "@/services/boards";
 
 async function HomePage() {
