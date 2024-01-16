@@ -3,6 +3,7 @@
 import { insertTaskSchema } from "@/types/tasks";
 import { tasksService } from "@/services/tasks";
 import { revalidatePath } from "next/cache";
+import { boardsService } from "@/services/boards";
 
 const requestSchema = insertTaskSchema.pick({
   title: true,
@@ -22,13 +23,27 @@ export async function createTask(formData: FormData) {
   });
 
   try {
+    const lastTask = await tasksService.getLast(data.boardId);
+    const board = await boardsService.get(data.boardId);
+
+    if (!board) throw new Error("Board not found");
+
+    const boardPrefix = board.boardPrefix;
+
+    let taskId = `${boardPrefix}-1`;
+
+    if (lastTask) {
+      taskId = `${boardPrefix}-${lastTask.id + 1}`;
+    }
+
     await tasksService.create({
       ...data,
+      taskId,
       boardId: BigInt(data.boardId),
     });
   } catch (error) {
     console.log(error);
   }
 
-  revalidatePath(`/${data.boardId}`);
+  revalidatePath(`/board/${data.boardId}`);
 }

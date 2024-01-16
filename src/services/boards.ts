@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { db } from "../../db";
 import { boards } from "../../db/schema";
 
-type CreateBoardParams = Pick<BoardInsert, "name">;
+type CreateBoardParams = Pick<BoardInsert, "name" | "boardPrefix">;
 
 export const boardsService = {
   create: async (board: CreateBoardParams) => {

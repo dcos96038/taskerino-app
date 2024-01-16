@@ -6,11 +6,13 @@ import { boardsService } from "@/services/boards";
 
 const requestSchema = insertBoardSchema.pick({
   name: true,
+  boardPrefix: true,
 });
 
 export async function createBoard(formData: FormData) {
   const data = requestSchema.parse({
     name: formData.get("name"),
+    boardPrefix: formData.get("boardPrefix"),
   });
 
   try {

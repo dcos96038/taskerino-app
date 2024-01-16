@@ -74,9 +74,10 @@ export const verificationTokens = mysqlTable(
 );
 
 export const boards = mysqlTable("board", {
-  id: serial("id").primaryKey().notNull(),
+  id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
   status: mysqlEnum("status", ["ACTIVE", "INACTIVE"]).default("ACTIVE"),
+  boardPrefix: varchar("boardPrefix", { length: 4 }),
   authorId: varchar("authorId", { length: 255 })
     .references(() => users.id, {
       onDelete: "cascade",
@@ -93,7 +94,7 @@ export const boardsRelations = relations(boards, ({ one, many }) => ({
 }));
 
 export const tasks = mysqlTable("task", {
-  id: serial("id").primaryKey().notNull(),
+  id: serial("id").primaryKey(),
   taskId: varchar("taskId", { length: 255 }).notNull(),
   title: varchar("title", { length: 255 }).notNull(),
   status: mysqlEnum("status", [
