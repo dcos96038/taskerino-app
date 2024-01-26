@@ -1,9 +1,8 @@
 import { TaskInsert } from "@/types/tasks";
 import { db } from "../../db";
 import { tasks } from "../../db/schema";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { count, desc, eq } from "drizzle-orm";
+import { getServerSession } from "@/lib/auth";
 
 type CreateTaskParams = Pick<
   TaskInsert,
@@ -12,7 +11,7 @@ type CreateTaskParams = Pick<
 
 export const tasksService = {
   create: async (task: CreateTaskParams) => {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession();
 
     if (!session) throw new Error("Unauthorized");
 
@@ -26,7 +25,7 @@ export const tasksService = {
   getLastId: async (_boardId: string) => {
     const boardId = BigInt(_boardId);
 
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession();
 
     if (!session) throw new Error("Unauthorized");
 
@@ -40,7 +39,7 @@ export const tasksService = {
     return totalTasksFromBoard.value;
   },
   delete: async (taskId: number) => {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession();
 
     if (!session) throw new Error("Unauthorized");
 

@@ -1,15 +1,14 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { BoardInsert } from "@/types/boards";
-import { getServerSession } from "next-auth";
 import { db } from "../../db";
 import { boards } from "../../db/schema";
 import { eq } from "drizzle-orm";
+import { getServerSession } from "@/lib/auth";
 
 type CreateBoardParams = Pick<BoardInsert, "name" | "boardPrefix">;
 
 export const boardsService = {
   create: async (board: CreateBoardParams) => {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession();
 
     if (!session) throw new Error("Unauthorized");
 
@@ -19,7 +18,7 @@ export const boardsService = {
     });
   },
   getAll: async () => {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession();
 
     if (!session) throw new Error("Unauthorized");
 
@@ -38,7 +37,7 @@ export const boardsService = {
     });
   },
   delete: async (boardId: string) => {
-    const session = await getServerSession(authOptions);
+    const session = await getServerSession();
 
     if (!session) throw new Error("Unauthorized");
 
