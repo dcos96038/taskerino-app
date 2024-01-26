@@ -1,16 +1,16 @@
 "use client";
 
 import {
-  TaskPriority,
   TaskLabel,
+  TaskPriority,
   TaskStatus,
   insertTaskSchema,
 } from "@/types/tasks";
-import { CiCirclePlus } from "react-icons/ci";
-import { useQueryParam, withDefault, BooleanParam } from "use-query-params";
-import { Modal } from "../../../../components/ui/modal";
 import { useRef, useState } from "react";
+import { CiCirclePlus } from "react-icons/ci";
+import { BooleanParam, useQueryParam, withDefault } from "use-query-params";
 import { Button } from "../../../../components/ui/button";
+import { Modal } from "../../../../components/ui/modal";
 
 interface AddTaskModalProps {
   boardId: string;
@@ -155,7 +155,7 @@ export const AddTaskModal: React.FC<AddTaskModalProps> = ({
               </div>
             ) : null}
             <div className="flex gap-4 justify-end">
-              <Button type="submit" variant="secondary" onClick={handleSubmit}>
+              <Button variant="secondary" onClick={handleSubmit}>
                 Add Task
               </Button>
             </div>
